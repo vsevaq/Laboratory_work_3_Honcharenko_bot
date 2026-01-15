@@ -52,21 +52,25 @@ def ask_chatgpt(question: str) -> str:
 def menu_handler(update: Update, context: CallbackContext):
     text = update.message.text
 
+    # Перевіряємо команди меню
     if text == "Student":
         update.message.reply_text("ПІБ: Гончаренко В.В.\nГрупа: ІС-з21")
+        return
     elif text == "IT-technologies":
-        update.message.reply_text("Front-ebd, Back-end, WEB-технології")
+        update.message.reply_text("Front-end, Back-end, WEB-технології")
+        return
     elif text == "Contacts":
         update.message.reply_text("Тел.: +380501318681\nE-mail: Vsevolodq@gmail.com")
+        return
     elif text == "Prompt AI":
         update.message.reply_text("Введіть запит до AI")
-    else:
-        context.bot.send_chat_action(
-            chat_id=update.effective_chat.id,
-            action=ChatAction.TYPING
-        )
-        answer = ask_chatgpt(text)
-        update.message.reply_text(answer)
+        return
+
+    # Все інше йде до OpenAI
+    context.bot.send_chat_action(chat_id=update.effective_chat.id, action=ChatAction.TYPING)
+    answer = ask_chatgpt(text)
+    update.message.reply_text(answer)
+
 
 
 def run_telegram_bot():
