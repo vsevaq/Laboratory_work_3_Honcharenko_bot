@@ -9,7 +9,7 @@ import openai
 from flask import Flask
 
 
-# ENV
+# env
 load_dotenv()
 
 TOKENTG = os.getenv("TOKENTG")
@@ -52,7 +52,7 @@ def ask_chatgpt(question: str) -> str:
 def menu_handler(update: Update, context: CallbackContext):
     text = update.message.text
 
-    # Перевіряємо команди меню
+    # команди меню
     if text == "Student":
         update.message.reply_text("ПІБ: Гончаренко В.В.\nГрупа: ІС-з21")
         return
@@ -66,7 +66,7 @@ def menu_handler(update: Update, context: CallbackContext):
         update.message.reply_text("Введіть запит до AI")
         return
 
-    # Все інше йде до OpenAI
+    # все інше йде до OpenAI
     context.bot.send_chat_action(chat_id=update.effective_chat.id, action=ChatAction.TYPING)
     answer = ask_chatgpt(text)
     update.message.reply_text(answer)
@@ -108,13 +108,12 @@ def run_flask():
 #    run_telegram_bot()
 
 
-# Для деплою на Render через Web Service
-# Запускає Flask, Telegram-бот працює через polling у фоні
+# Для деплою на Render через Web Service. Запускає Flask, Telegram-бот працює через polling у фоні
 # Тут бот запускається у фоні без idle, через Flask Web Service Render
 if __name__ == "__main__":
-    # запускаємо Telegram-бот у фоновому потоці
+    # запуск Telegram-бота у фоновому потоці
 
     Thread(target=run_telegram_bot).start()
 
-    # запускаємо Flask (Render тримає процес живим)
+    # запуск Flask (Render тримає процес живим)
     run_flask()
